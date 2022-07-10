@@ -17,9 +17,9 @@ Before we start lets get ourselves aquainted with few nitty gritties of the prob
       - Player will need some kind of IDE with capabilities of compiling the smart contract. It should also have the ability to deploy to a test network, in our case Rinkby. After conpiling the smart contract, we can immediately deploy the code and test all tthe functions. The IDE recommended in this series is Remix: https://remix.ethereum.org
 
 Few important console command to play the game: 
- - "player" command will give us the player's ethereum address which will correspond to the Metamask wallet address.
- - "getBalance" command will get us the current balance of player which will again correspond to Metamask wallet balance.
- - "help" this command will provide all the important commands available for the player like the ones mentioned till now.
- - "ethernaut" this is the game's main smart contract object. It is a TruffleContract object that wraps the ethernaut.sol contract that has been deployed on the blockchain.
- - The ABI (Application Binary Interface) of a smart contract gives a contract the ability to communicate and interact with external applications and other smart contracts. The player can interact with the smart contract deployed on the Rinkby blockchain and try to solve the game by interacting with this ABI.
- - Among other things, the contract's ABI exposes all of Ethernaut.sol's public methods, such as owner. Player can use the command ethernaut.owner() to get the owner of the current contract it is interacting with.
+- "player" command will give us the player's ethereum address which will correspond to the Metamask wallet address.
+- "getBalance" command will get us the current balance of player which will again correspond to Metamask wallet balance.
+- "help" this command will provide all the important commands available for the player like the ones mentioned till now.
+- "ethernaut" this is the game's main smart contract object. It is a TruffleContract object that wraps the ethernaut.sol contract that has been deployed on the blockchain.
+- The ABI (Application Binary Interface) of a smart contract gives a contract the ability to communicate and interact with external applications and other smart contracts. The player can interact with the smart contract deployed on the Rinkby blockchain and try to solve the game by interacting with this ABI.
+- Among other things, the contract's ABI exposes all of Ethernaut.sol's public methods, such as owner. Player can use the command ethernaut.owner() to get the owner of the current contract it is interacting with.
