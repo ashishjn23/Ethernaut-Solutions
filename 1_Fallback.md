@@ -56,7 +56,7 @@ contract Fallback {
 }
 ```
 
-Let's quickly go over some of the important aspects of the contract code:
+## Let's quickly go over some of the important aspects of the contract code:
 
 - We have a solidity contract named Fallback. The next few lines are the declaration of the usage of library "SafeMath" which we are foing to utilize for the operations of basic maths but this library is needed to perform those operations without the security vulnerabilities.
 
@@ -104,7 +104,7 @@ Next we have a helper function which returns the contributions value for the sen
   }
 ```
 
-Now, here we have a function which is actually usefull to solving the problem
+here we have a function which is actually usefull to solving the problem
 ```solidity
   function withdraw() public onlyOwner {
     owner.transfer(address(this).balance);
@@ -122,9 +122,13 @@ The last but the most important function of the code is the "recieve" function.
 ```
 - As you can see it is not a normal function. It does not have the "function" identifier as a normal function has. It's a receive function now known as a fallback function (the name of the challenge!). 
 - The purpose of this function is: Anytime ether is sent to this contract, and the sender doesnt specify any function name while sending (I will show how that can be done later) then the ether is transfere to the contract address and this fallback/receive function is executed. 
+
+## Vulnerability
+- The receive function is the main culprit as it is public and makes the caller the owner immediately (after checking 2 conditions, but still!)
+- Only 2 checks specified here are not enough to stop us from becoming the owner.  
 - In this contract's case, the msg.value is checked to be greater than 0 and the contributions of the sender need to be more than 0. Once these conditions are met, the msg.sender becomes the owner. This is what we want right!
 - If the player is able to send any amount of ether without specifying any function name and has contriburted something earlier, then the player becomes the owner!
-- The receive function is the main culprit as the only 2 checks specified here are not enough to stop us from becoming the owner easily.  
+
 
 ## Solution
 Now that we have covered all the functions, lets understand the solution steps to the problem.
@@ -169,4 +173,4 @@ await getBalance(contract.address)
 
 
 
-## Hope you found the explanation helpful and were able to understand the solution in detail! Hope to see you in the next post!
+## Hope you found the explanation helpful and were able to understand the solution in detail! See you in the next post!
