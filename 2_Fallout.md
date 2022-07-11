@@ -1,9 +1,9 @@
 # Fallout
 
 Welcome to the Ethernaut series with me!
-Today we will discuss the 2nd problem in the series Fallout and go over the solution steps.
+Today we will discuss the 2nd problem Fallout.
 
-The aim to solve this challenge is to:
+The goal of this challenge is to:
 1. Take ownership of the contract.
 
 Let's take a look of the contract code:
