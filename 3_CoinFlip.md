@@ -76,7 +76,54 @@ uint256 coinFlip = blockValue.div(FACTOR);
 - The value of coinFlip is compared to 1. If it matches then the variable side is True else False.
 - Next it compares the the player's guess with the variable side. We need to match this variable 10 times in a row.
 
-### Vulnerability
+## Vulnerability
 
-- 
-- The flawed way of using randomness is using globally accessible variables for seeds. 
+- The flawed way of using randomness is using globally accessible variables for seeds like, timestamp, gasprice, difficulty, etc. This means that anybody can see these variables. Then anybody can copy the same code from the contract and generate the same random number. 
+- In our case, the global variable used is blockhash(blockNumber). This gives the hash of the given block. In the code, blocknumber of the last mined block is used.
+- The code also divides the hash with the constant FACTOR. Again this is a publicly accessible number.
+
+## Solution
+The hack for this problem is basically:
+Write a new contract using the same globally accessible variables and call the public function flip from the CoinFlip contract. In the contract we will use the same variable value for FACTOR and access the globally available variables and replicate the coin's side to beat the game.
+
+### Attack script:
+```solidity
+Contract CoinFlipAttack {
+	CoinFlip public victimContract;
+
+    uint256 FACTOR = 57896044618658097711785492504343953926634992332820282019728792003956564819968;
+
+	constructor(address _victimContractAddr) public {
+		victimContract = coinFlip(_victimContractAddress);
+	}
+	
+	function flip public returns (bool) {
+		uint256 blockValue = uint256(blockhash(block.number - 1));
+		uint256 coinFlip = uint256(blockValue/FACTOR);
+		bool side = coinFlip == 1 ? true : false;
+
+		victimContract.flip(side);
+	}
+}
+```
+
+### Code Review
+
+- In the constructor we initialize the public variable victimContract with the instance of the object of the vulnerable contract we want to attack by passing the address of the instance of the Ethernaut contract. Note: While creating the object, we are not using the "new" keyword as we are not creating a new instance of the contract, but trying to access the already existing instance of the contract. 
+- In the flip function we perform 2 steps: retrieve the publically accessible block number of the blockchain and divide the value by FACTOR.
+- We check the value of the coinFlip variable and assign true or false value to our side variable.
+- Then the flip function of the vulnerable contract is called using the instance earlier initialized and side variable is passed as an argument. 
+
+## Attack execution
+
+- Lets get the contract instance address of CoinFlip.sol from the Ethernaut console page first using the below command.
+```solidity
+await contract.address
+```
+- Compile and deploy both solidity codes, Coinflip.sol and CoinFlipAttack.sol on Remix IDE. while deploying CoinFlipAttack.sol, use the address retrieved in the above step.
+- Once CoinFlipAttack is deployed, you will be able to see a flip function in the IDE. You will have to trigger that function. 
+- This will generate the value for "side" variable same as that is created in the CoinFlip contract as the seed values used to create the random number.
+- This side variable value is then sent to the flip function of CoinFlip function. This will execute the condition `if (side == _guess)` in the flip function and as we have the same guess as the side, we are always going to win!
+
+## Conclusion
+A smart contract should not use publically accessible numbers as seed to generate a random number. We could easily re-create the random number and provide a guess to the coin flop 100% of the time.
