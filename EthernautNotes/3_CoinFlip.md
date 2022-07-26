@@ -1,6 +1,6 @@
 # CoinFlip
 
-Welcome to the Ethernaut series with me!
+Welcome to my Ethernaut solution series!
 Today we will discuss the 3rd problem called CoinFlip.
 This smart contract is a coin flipping game where the player needs to get a winning streak by guessing the outcome of a coin. 
 
@@ -81,6 +81,8 @@ uint256 coinFlip = blockValue.div(FACTOR);
 - The flawed way of using randomness is using globally accessible variables for seeds like, timestamp, gasprice, difficulty, etc. This means that anybody can see these variables. Then anybody can copy the same code from the contract and generate the same random number. 
 - In our case, the global variable used is blockhash(blockNumber). This gives the hash of the given block. In the code, blocknumber of the last mined block is used.
 - The code also divides the hash with the constant FACTOR. Again this is a publicly accessible number.
+
+## How to avoid the vulnerability
 
 ## Solution
 The hack for this problem is basically:
