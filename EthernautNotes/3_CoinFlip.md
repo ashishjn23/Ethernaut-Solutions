@@ -1,7 +1,7 @@
 # CoinFlip
 
 Welcome to my Ethernaut solution series!
-Today we will discuss the 3rd problem called CoinFlip.
+Today we will discuss the vulnerailities and the solution to 3rd problem called CoinFlip.
 This smart contract is a coin flipping game where the player needs to get a winning streak by guessing the outcome of a coin. 
 
 The goal of this challenge is:
@@ -17,9 +17,12 @@ import '@openzeppelin/contracts/math/SafeMath.sol';
 contract CoinFlip {
 
   using SafeMath for uint256;
-  uint256 public consecutiveWins;
-  uint256 lastHash;
-  uint256 FACTOR = 57896044618658097711785492504343953926634992332820282019728792003956564819968;
+  uint256 public consecutiveWins;   // consecutiveWins is the public uint variable holding the wins in a row for the player. 
+                                    // We need to somehow increment this value to 10 to win this game.
+  uint256 lastHash;   // lastHash is a variable which stores the value of a hash of the last block of our Rinkby blockchain.
+                      // It is a state variable which is used to compare if the 
+  uint256 FACTOR = 57896044618658097711785492504343953926634992332820282019728792003956564819968;   // FACTOR is the variable holding a constant value
+                      // which is used as a part of the process of creating entropy.
 
   constructor() public {
     consecutiveWins = 0;
@@ -48,12 +51,6 @@ contract CoinFlip {
 ```
 ## Code review
 
-### State Variables
-We have three variables declared for the contract. 
-- consecutiveWins is the public uint variable holding the wins in a row for the player. We need to somehow increment this value to 10 to win this game.
-- FACTOR is the variable holding a constant value which is used as a part of the process of creating entropy.
-- lastHash is a variable which stores the value of a hash of the last block of our Rinkby blockchain. It is a state variable which is used to compare if the privious call to this function had the same hash value. We will discuss this variable in detail later.
-
 ### Constructor
 - The variable consecutiveWins needs to be initialised to Zero for every instance of the game.
 
@@ -78,24 +75,26 @@ uint256 coinFlip = blockValue.div(FACTOR);
 
 ## Vulnerability
 
-- The flawed way of using randomness is using globally accessible variables for seeds like, timestamp, gasprice, difficulty, etc. This means that anybody can see these variables. Then anybody can copy the same code from the contract and generate the same random number. 
+- The flawed way of using randomness is using globally accessible variables and functions to derive randomness. This means that anybody can see the values of these variables and by using them as seeds, recreate the random number. 
 - In our case, the global variable used is blockhash(blockNumber). This gives the hash of the given block. In the code, blocknumber of the last mined block is used.
-- The code also divides the hash with the constant FACTOR. Again this is a publicly accessible number.
+- The code also divides the hash with the constant FACTOR. Again this is a publicly accessible number which can be used while recreating the required random number.
 
 ## How to avoid the vulnerability
 
-## Solution
-The hack for this problem is basically:
-Write a new contract using the same globally accessible variables and call the public function flip from the CoinFlip contract. In the contract we will use the same variable value for FACTOR and access the globally available variables and replicate the coin's side to beat the game.
+Avoid using variables such as timestamp, gasprice, difficulty, etc. for seeds while generating a random number.
 
-### Attack script:
+## Solution
+The hack for this problem is:
+Write a new contract to recreate the flip value using the same globally accessible variables and call the public function flip from the CoinFlip contract. In the contract we will use the same variable value for FACTOR and access the globally available variables and replicate the coin's side to beat the game.
+
+### Attack script
 ```solidity
 Contract CoinFlipAttack {
 	CoinFlip public victimContract;
 
     uint256 FACTOR = 57896044618658097711785492504343953926634992332820282019728792003956564819968;
 
-	constructor(address _victimContractAddr) public {
+	constructor(address _victimContractAddr) public { 
 		victimContract = coinFlip(_victimContractAddress);
 	}
 	
