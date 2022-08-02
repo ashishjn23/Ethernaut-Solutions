@@ -92,4 +92,7 @@ The attack contract is pretty straightforward.
 - This will create an instance of attack contract which has the telephoneContract object created pointing to the instance of target contract.
 - The next and final step is to call the function attack() on the attack contract. This will call the target contract's changeOwner function.
 - check the owner value again by executing command ```await contract.owner()``` and verify that the player address is now the owner variable's value.
-- And Voila! we have successfully solved the challenge!
+- And Voila! we have successfully solved the challenge!`
+
+## Conclusion
+
