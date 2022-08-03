@@ -10,7 +10,7 @@ This challenge is nothing fancy. Just a contract we need to take control over. T
 
 ## Code review
   
-Let's take a look of the contract code:
+Let's take a look of the target contract:
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
@@ -85,7 +85,7 @@ The attack contract is pretty straightforward.
 - The only other function is attack(). This function will call the function changeOwner() with the argument of msg.sender from the attack contract, which will be the player's address as in attack contract the msg.sender is the player. As the changeOwner() function is called by our Attack contract, the msg.sender in the target contract will reflect the address of attack contract. Although, the tx.origin will be player's address.
 
 ### Attack execution
-- Get the address of target contract while deploying Attack contract as our constructor needs the target contract address to interact with it. Use the command ```await contract.address```
+- Get the address of target contract before deploying Attack contract as our constructor needs the target contract address to interact with it. Use the command ```await contract.address```
 - Before trying to attack the target contract, use the command ```await contract.owner()``` which is a public getter function in the target contract to know the current owner of the contract.
 - Also try the command ```await contract.changeOnwer()``` to change the contract. As here the player is the message.sender and tx.origin, the require statement in the function will fail.
 - Now go ahead and deploy the Attack contract using the target contract's address as the input to the constructor. 

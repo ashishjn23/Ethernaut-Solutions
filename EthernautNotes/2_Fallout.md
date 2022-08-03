@@ -6,7 +6,7 @@ Today we will discuss the 2nd problem Fallout.
 The goal of this challenge is to:
 1. Take ownership of the contract.
 
-Let's take a look of the contract code:
+Let's take a look at the target contract:
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.0;

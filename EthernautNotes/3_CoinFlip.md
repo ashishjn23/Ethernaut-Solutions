@@ -7,7 +7,7 @@ This smart contract is a coin flipping game where the player needs to get a winn
 The goal of this challenge is:
 1. Guess the correct outcome 10 times in a row
 
-Let's take a look of the contract code:
+Let's take a look at the target contract:
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.0;

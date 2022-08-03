@@ -6,7 +6,7 @@ To beat this level the player needs to
 1. claim ownership of the contract: The public address defined in the contract should contain player's address.
 2. Reduce the balance of the contract to 0: The value of the contract's balance should be drained to 0!
 
-Let's look at the contract code:
+Let's look at the target contract:
 
 ```solidity
 // SPDX-License-Identifier: MIT

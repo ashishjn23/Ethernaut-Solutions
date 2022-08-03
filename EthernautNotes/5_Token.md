@@ -10,7 +10,7 @@ This smart contract has a mapping called as balance which contains the balance o
 
 ## Code review
   
-Let's take a look of the contract code:
+Let's take a look of the target contract:
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.0;
